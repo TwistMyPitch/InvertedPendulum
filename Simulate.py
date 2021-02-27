@@ -1,12 +1,12 @@
-import numpy as np
-from scipy import integrate
-import matplotlib.pyplot as plt
-import matplotlib.animation as animation
-import math
+import numpy as np #for numerics
+from scipy import integrate #for integratin of EoM
+import matplotlib.pyplot as plt #for plots
+import matplotlib.animation as animation #for animations 
+import sympy #for symbolic algebra
 
 #Define constants that go into simulation
 massCart = 5; #[kg]
-massPendulum = 1.0; #[kg]
+massPendulum = 2.0; #[kg]
 Length = 1; # [m]
 g = 9.82; #[m/s^2]
 Force = 0; #[N]
@@ -19,10 +19,10 @@ Args =  (massCart, Length, g, massPendulum, Bcart, Force, Torque);
 Ts = 0.01; #[s]
 SimulationTime = 20.0; #[s]
 
-InitialAngle = 0; #[rad]
-InitialAngleRate = 0.1; #[rad/s]
+InitialAngle = -0.1; #[rad]
+InitialAngleRate = 0.4; #[rad/s]
 InitialPosition = 0.0; #[m]
-InitialVelocity = -0.2; #[m]
+InitialVelocity = 0.0; #[m]
 InitialValues = (InitialAngle, InitialAngleRate, InitialPosition, InitialVelocity);
 #print(InitialValues[3])
 
@@ -41,10 +41,6 @@ def PendulumOnCartSim(InitialValues, t, massCart, Length, g, massPendulum, Bcart
 
 	Theta2Dot = ( Torque_eq/(massPendulum*Length)*(massPendulum+massCart) - Force_eq*np.cos(InitialValues[0]) + g*np.sin(InitialValues[0])*(massCart+massPendulum) \
 		-massPendulum*Length*np.sin(InitialValues[0])*np.cos(InitialValues[0])*InitialValues[1]**2)  /  ( Length*(massCart+massPendulum*np.sin(InitialValues[0])**2) );
-
-	#x2Dot = 1/(massCart+massPendulum) * (Force_eq + massPendulum*Length*np.sin(InitialValues[0])*InitialValues[1]**2 - ( Torque_eq/Length*np.cos(InitialValues[0])*(massCart+massPendulum) \
-	#	- Force_eq*massPendulum*np.cos(InitialValues[0])**2 + massPendulum*g*np.sin(InitialValues[0])*np.cos(InitialValues[0])*(massPendulum+massCart) - massPendulum**2*Length*np.sin(InitialValues[0])*np.cos(InitialValues[0])**2*InitialValues[1]**2) \
-	#/( massCart+massPendulum*np.sin(InitialValues[0])**2 ) )
 
 
 	x2Dot = ( Force_eq - Torque_eq/Length*np.cos(InitialValues[0]) + massPendulum*np.sin(InitialValues[0])*(Length*InitialValues[1]**2-g*np.cos(InitialValues[0])) ) / ( massCart+massPendulum*np.sin(InitialValues[0])**2 );
